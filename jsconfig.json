@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+  "baseUrl": ".",
+    "paths": {
+    "@/*": ["src/*"]
+  }
+},
+  "exclude": ["node_modules", "dist"],
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true
+  },
+  "types": [
+    "vue-sweetalert2"
+  ],
+}
