@@ -2,6 +2,11 @@ export default [
   'General',
   [
     {
+      to: '/home',
+      icon: 'chart-bar',
+      label: 'Inicio'
+    },
+    {
       to: '/dashboard',
       icon: 'chart-bar',
       label: 'Dashboard'

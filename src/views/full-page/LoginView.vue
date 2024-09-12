@@ -11,7 +11,7 @@
       Dashboard
     </router-link>
     <img
-      src="../../assets/TesoroPunto.png"
+      src="../../assets/Armala.png"
       alt=""
       height="250"
       width="250"
