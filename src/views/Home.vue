@@ -15,11 +15,18 @@
     </hero-bar>
     <section class="section is-main-section">
       <div class="columns  is-multiline is-desktop">
-        <div class="column" v-for="(matches, index) in matchArray" :key="index">
-          <div class="card">
+        <div class="column is-one-quarter
+
+" v-for="(matches, index) in matchArray" :key="index">
+          <div class="card" @click="openModalAddNewClient">
             <div class="card-content">
               <div class="content">
-                {{ matches.matchCode }}
+                <p>Pichanga el {{ new Date(matches.matchDate).toLocaleDateString('en-GB')}}</p>
+                <p>En {{ matches.place}}</p>
+                <p>A las {{ new Date(matches.startHour).getHours() }}:{{ new Date(matches.startHour).getMinutes() }}</p>
+                <div><img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQoj9PhSQgs91v6mPY-Xz5eGwyUZfRjMwWqLd4GnM7EszpCiSWM8_Pumruq8TrJJxfRw&usqp=CAU"
+                    class="" alt=""></div>
               </div>
             </div>
           </div>
