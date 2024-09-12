@@ -14,6 +14,18 @@
       <b-button slot="right" label="Armar un partido" type="is-info" @click="openModalAddNewClient" />
     </hero-bar>
     <section class="section is-main-section">
+      <div class="columns  is-multiline is-desktop">
+        <div class="column" v-for="(matches, index) in matchArray" :key="index">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                {{ matches.matchCode }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- <notification-bar class="is-info">
         <div>
           <b-icon
@@ -24,50 +36,55 @@
         </div>
       </notification-bar> -->
 
+
+
       <b-modal v-model="isCardModalActive" width="70%" scroll="clip">
         <form action="">
           <div class="modal-card" style="width: auto">
             <header class="modal-card-head">
               <h3 class="modal-card-title title is-3">
-               Datos de tu pichanga
-              </h3 class="modal-card-title">
+                Datos de tu pichanga
+              </h3>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
               <div class="columns is-mobile">
                 <div class="column">
-                  <b-field  label="Fecha">
-                    <b-datepicker v-model="client.birthDate" locale="en-GB" type="date" placeholder=""
+                  <b-field label="Fecha">
+                    <b-datepicker v-model="match.dateMatch" locale="en-GB" type="date" placeholder=""
                       icon="calendar-today" position="is-bottom-left" trap-focus />
                   </b-field>
-                  <b-field  label="Lugar">
-                    <b-input v-model="client.lastname" type="text" maxlength="30" required />
+                  <b-field label="Lugar">
+                    <b-input v-model="match.place" type="text" maxlength="30" required />
                   </b-field>
-                  <b-field  label="Desde">
-                    <b-timepicker  placeholder="" icon="clock" editable
-                      :enable-seconds="enableSeconds" :hour-format="hourFormat" :locale="locale">
+                  <b-field label="Desde">
+                    <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
+                      :hour-format="hourFormat" :locale="locale" v-model="match.start">
                     </b-timepicker>
                   </b-field>
-                  <b-field  label="Hasta">
-                    <b-timepicker  placeholder="" icon="clock" editable
-                      :enable-seconds="enableSeconds" :hour-format="hourFormat" :locale="locale">
+                  <b-field label="Hasta">
+                    <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
+                      :hour-format="hourFormat" :locale="locale" v-model="match.end">
                     </b-timepicker>
                   </b-field>
-                  
+
                 </div>
-                
-                <div class="column"><b-field  label="Precio de la cancha" message="Este monto sera divido entre la cantidad de jugadores">
-                    <b-input v-model="client.lastname" type="text" maxlength="30" required />
+
+                <div class="column"><b-field label="Precio de la cancha"
+                    message="Este monto sera divido entre la cantidad de jugadores">
+                    <b-input v-model="match.price" type="text" maxlength="30" required />
                   </b-field>
-                  <b-field  label="Cantidad de jugadores" >
-                    <b-input v-model="client.lastname" type="text" maxlength="30" required />
+                  <b-field label="Cantidad de jugadores">
+                    <b-input v-model="match.quantityPlayers" type="text" maxlength="30" required />
                   </b-field>
-                  <b-field  label="Cuota" >
-                    <b-input v-model="client.lastname" type="text" maxlength="30" required />
+                  <b-field label="Cuota">
+                    <b-input v-model="match.quote" type="text" maxlength="30" required />
                   </b-field>
                 </div>
                 <div class="column">
-                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQoj9PhSQgs91v6mPY-Xz5eGwyUZfRjMwWqLd4GnM7EszpCiSWM8_Pumruq8TrJJxfRw&usqp=CAU" class="rotate-image" alt="">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQoj9PhSQgs91v6mPY-Xz5eGwyUZfRjMwWqLd4GnM7EszpCiSWM8_Pumruq8TrJJxfRw&usqp=CAU"
+                    class="rotate-image" alt="">
                 </div>
               </div>
 
@@ -96,7 +113,7 @@
                 <div class="field is-grouped is-grouped-right" />
               </div>
               <b-button label="Cancelar" @click="$emit('close')" />
-              <b-button v-show="createButton" label="Crear" type="is-primary" @click="createNewClient" />
+              <b-button v-show="createButton" label="Crear" type="is-primary" @click="createNewMatch" />
               <b-button v-show="updateButton" label="Actualizar" type="is-primary" @click="updateClient" />
             </footer>
           </div>
@@ -228,11 +245,23 @@ export default defineComponent({
         email: null
 
       },
+      match: {
+        dateMatch: new Date(),
+        place: null,
+        start: null,
+        end: null,
+        price: null,
+        quantityPlayers: null,
+        quote: null,
+        matchCode: null,
+        createdBy: null,
+      },
       inputStateActive: false,
       inputProvinceActive: false,
       inputDistrictActive: false,
       updateButton: false,
-      createButton: true  
+      createButton: true,
+      matchArray: []
     }
   },
   computed: {
@@ -270,7 +299,7 @@ export default defineComponent({
     }
   },
   created() {
-    this.loadClients()
+    this.loadMatches()
     this.loadNationalities()
     this.loadCountries()
   },
@@ -537,13 +566,89 @@ export default defineComponent({
         })
         return false
       }
-    }
+    },
+
+
+
+    // MATCH FUNCTIONS
+
+    async createNewMatch() {
+
+      var codeGenerated = this.Str_Random(10)
+      this.match.matchCode = codeGenerated
+      console.log("PARTIDO", this.match)
+      if (this.validateIfFieldsFilled()) {
+        const localStorageData = JSON.parse(localStorage.getItem('userData'))
+        const token = localStorageData.token
+        const response = await axios.post(`${backendURL}/api/Match`, {
+          matchDate: this.match.dateMatch,
+          startHour: this.match.start,
+          endHour: this.match.end,
+          numberPlayer: this.match.quantityPlayers,
+          place: this.match.place,
+          price: this.match.price,
+          matchCode: this.match.matchCode,
+          quote: this.match.quote,
+          createdBy: this.match.createdBy,
+
+
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        console.log("PARTIDO", this.Str_Random(10))
+        console.log(response.data)
+        if (response.data.isSuccess) {
+          this.$swal.fire('Pichanga registrada!', '', 'success')
+          this.loadMatches()
+          this.isCardModalActive = false
+        } else {
+          this.$swal.fire('Hubo un error en el registro', `${response.data.errorMessages}`, 'Revisar')
+        }
+      }
+      // eslint-disable-next-line new-cap
+      // this.$swal.fire({
+      //   icon: 'success',
+      //   title: 'Your work has been saved',
+      //   showConfirmButton: false,
+      //   timer: 1500
+      // })
+    },
+    Str_Random(length) {
+      let result = '';
+      const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+      // Loop to generate characters for the specified length
+      for (let i = 0; i <= length; i++) {
+        const randomInd = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomInd);
+      }
+      return result;
+    },
+    async loadMatches() {
+      console.log('hola')
+      this.isLoading = true
+      const localStorageData = JSON.parse(localStorage.getItem('userData'))
+      const token = localStorageData.token
+      this.pageNumber = this.current
+      const response = await axios.get(`${backendURL}/api/Match?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      this.totalRecords = response.data.totalRecords
+      this.current = this.pageNumber
+      this.info = response.data.result
+      var matchRows = Math.round(this.totalRecords / 4)
+      this.isLoading = false
+      this.matchArray = response.data.result
+
+      // return this.info
+    },
 
   }
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../scss/_theme-default";
+
 
 $pagination-color: $base-color
 </style>
@@ -551,8 +656,8 @@ $pagination-color: $base-color
 <style scoped>
 .rotate-image {
 
-/* Adjust the angle as needed */
-transform: rotate(90deg);
-margin-top: 100px;
+  /* Adjust the angle as needed */
+  transform: rotate(90deg);
+  margin-top: 100px;
 }
 </style>

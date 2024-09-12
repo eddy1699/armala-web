@@ -54,7 +54,7 @@
 
       <hr>
 
-      <b-field grouped>
+      <b-field >
         <div class="control">
           <b-button
             native-type="submit"
@@ -66,6 +66,10 @@
           >
             Ingresar
           </b-button>
+          <b-button  type="is-ghost" tag="router-link" to="register " :disabled="false">
+                Registrarse
+            </b-button>
+          
           <!-- </div>
         <div class="control">
           <router-link
@@ -145,7 +149,7 @@ export default defineComponent({
         const userCompleteName = JSON.parse(localStorage.getItem('userData')).user
         console.log('userloging', userCompleteName.name)
         this.saveAccess()
-        this.$router.push('/clientes')
+        this.$router.push('/home')
         this.$buefy.toast.open({
           duration: 5000,
           message: `Bienvenido ${userCompleteName.name}`,
