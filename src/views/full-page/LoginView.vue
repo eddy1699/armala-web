@@ -1,75 +1,36 @@
 <template>
-  <card-component
-    title="Iniciar Sesión"
-    icon="lock"
-  >
-    <router-link
-      slot="button"
-      to="/"
-      class="button is-small"
-    >
+  <card-component title="Iniciar Sesión" icon="lock">
+    <router-link slot="button" to="/" class="button is-small">
       Dashboard
     </router-link>
-    <img
-      src="../../assets/Armala.png"
-      alt=""
-      height="250"
-      width="250"
-      class="center"
-    >
-    <form
-      method="POST"
-      @submit.prevent="login"
-    >
+    <img src="../../assets/Armala.png" alt="" height="250" width="250" class="center">
+    <form method="POST" @submit.prevent="login">
       <b-field label="Usuario">
-        <b-input
-          v-model="form.email"
-          name="user"
-          type="text"
-          required
-        />
+        <b-input v-model="form.email" name="user" type="text" required />
       </b-field>
 
       <b-field label="Contraseña">
-        <b-input
-          v-model="form.password"
-          type="password"
-          name="password"
-          required
-        />
+        <b-input v-model="form.password" type="password" name="password" required />
       </b-field>
-      <div
-        class="g-recaptcha"
-        data-sitekey="6Lfm3FYoAAAAAOTGDrnZcGShmF3oodUREPrAyA9r"
-      />
+      <div class="g-recaptcha" data-sitekey="6Lfm3FYoAAAAAOTGDrnZcGShmF3oodUREPrAyA9r" />
       <b-field>
-        <b-checkbox
-          v-model="form.remember"
-          type="is-black"
-          class="is-thin"
-        >
+        <b-checkbox v-model="form.remember" type="is-black" class="is-thin">
           Recordarme
         </b-checkbox>
       </b-field>
 
       <hr>
 
-      <b-field >
+      <b-field>
         <div class="control">
-          <b-button
-            native-type="submit"
-            type=""
-            class="btn"
-            :loading="isLoading"
-            :disabled="formCompleted==false"
-            @click="login"
-          >
+          <b-button native-type="submit" type="" class="btn" :loading="isLoading" :disabled="formCompleted == false"
+            @click="login">
             Ingresar
           </b-button>
-          <b-button  type="is-ghost" tag="router-link" to="register " :disabled="false">
-                Registrarse
-            </b-button>
-          
+          <b-button type="is-ghost" tag="router-link" to="register " :disabled="false">
+            Registrarse
+          </b-button>
+
           <!-- </div>
         <div class="control">
           <router-link
@@ -96,7 +57,7 @@ import isAuthenticatedGuard from '../../router/auth-guard'
 export default defineComponent({
   name: 'LoginView',
   components: { CardComponent },
-  data () {
+  data() {
     return {
       isLoading: false,
       formCompleted: false,
@@ -111,7 +72,7 @@ export default defineComponent({
     'form.email': function () { this.inputsFilled(this.form.email, this.form.password) },
     'form.password': function () { this.inputsFilled(this.form.email, this.form.password) }
   },
-  created () {
+  created() {
     this.validateToken()
     this.loadAccess()
   },
@@ -125,17 +86,17 @@ export default defineComponent({
     //     this.$router.push('/')
     //   }, 750)
     // },
-    async onloadCallback () {
+    async onloadCallback() {
       alert('grecaptcha is ready!')
     },
-    inputsFilled (username, password) {
+    inputsFilled(username, password) {
       if (username.length > 1 && password.length > 1) {
         this.formCompleted = true
       } else {
         this.formCompleted = false
       }
     },
-    async login () {
+    async login() {
       this.isLoading = true
       const response = await axios.post(`${backendURL}/api/User/login`,
         {
@@ -168,7 +129,7 @@ export default defineComponent({
       this.info = response.data.result
       return this.info
     },
-    validateToken () {
+    validateToken() {
       try {
         const tokenLocalStorage = JSON.parse(localStorage.getItem('userData')).token
         if (tokenLocalStorage != null) {
@@ -178,7 +139,7 @@ export default defineComponent({
         // console.warn(error)
       }
     },
-    saveAccess () {
+    saveAccess() {
       console.log('Guardado!', this.form.remember)
       if (this.form.remember) {
         const userAccess = {
@@ -189,7 +150,7 @@ export default defineComponent({
         console.log('Guardado!')
       }
     },
-    loadAccess () {
+    loadAccess() {
       if (localStorage.getItem('userAccess')) {
         this.form.email = JSON.parse(localStorage.getItem('userAccess')).userName
       }
@@ -201,9 +162,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../scss/theme-default';
 
-.btn{
+.btn {
   background-color: $base-color;
 }
+
 .center {
   display: block;
   margin-left: auto;

@@ -118,10 +118,8 @@
                     </b-timepicker>
                   </b-field>
                   <div class="column">
-                  <img
-                    src="../assets/field.png"
-                    class="" alt="">
-                </div>
+                    <img src="../assets/field.png" class="" alt="">
+                  </div>
                   <!-- <b-field label="Hasta">
                     <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
                       :hour-format="hourFormat" :locale="locale" v-model="match.end">
@@ -326,7 +324,7 @@ export default defineComponent({
       updateButton: false,
       createButton: true,
       matchArray: [],
-      enableSeconds :null
+      enableSeconds: null
     }
   },
   computed: {
@@ -652,34 +650,34 @@ export default defineComponent({
       var codeGenerated = this.Str_Random(6)
       this.match.matchCode = codeGenerated
       console.log("PARTIDO", this.match)
-     
-        const localStorageData = JSON.parse(localStorage.getItem('userData'))
-        const token = localStorageData.token
-        const response = await axios.post(`${backendURL}api/Match`, {
-          matchDate: this.match.dateMatch,
-          startHour: this.match.start,
-          endHour: this.match.end,
-          numberPlayer: this.match.quantityPlayers,
-          place: this.match.place,
-          price: this.match.price,
-          matchCode: this.match.matchCode,
-          quote: this.match.quote,
-          createdBy: JSON.parse(localStorage.getItem('userData')).user.id
+
+      const localStorageData = JSON.parse(localStorage.getItem('userData'))
+      const token = localStorageData.token
+      const response = await axios.post(`${backendURL}api/Match`, {
+        matchDate: this.match.dateMatch,
+        startHour: this.match.start,
+        endHour: this.match.end,
+        numberPlayer: this.match.quantityPlayers,
+        place: this.match.place,
+        price: this.match.price,
+        matchCode: this.match.matchCode,
+        quote: this.match.quote,
+        createdBy: JSON.parse(localStorage.getItem('userData')).user.id
 
 
-        }, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-      
-        console.log(response.data)
-        if (response.data.isSuccess) {
-          this.$swal.fire('Pichanga registrada!', '', 'success')
-          this.loadMatches()
-          this.isCardModalActive = false
-        } else {
-          this.$swal.fire('Hubo un error en el registro', `${response.data.errorMessages}`, 'Revisar')
-        }
-      
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      console.log(response.data)
+      if (response.data.isSuccess) {
+        this.$swal.fire('Pichanga registrada!', '', 'success')
+        this.loadMatches()
+        this.isCardModalActive = false
+      } else {
+        this.$swal.fire('Hubo un error en el registro', `${response.data.errorMessages}`, 'Revisar')
+      }
+
       // eslint-disable-next-line new-cap
       // this.$swal.fire({
       //   icon: 'success',
@@ -710,7 +708,7 @@ export default defineComponent({
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      this.matchArray=[response.data.result]
+      this.matchArray = [response.data.result]
       console.log(this.matchArray)
       // this.totalRecords = response.data.totalRecords
       // this.current = this.pageNumber
