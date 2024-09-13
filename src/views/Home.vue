@@ -15,26 +15,71 @@
     </hero-bar>
     <section class="section is-main-section">
       <div class="columns  is-multiline is-desktop">
-        <div class="column is-one-quarter
+        <div class="column is-one-quarter 
 
 " v-for="(matches, index) in matchArray" :key="index">
-          <div class="card" @click="openModalAddNewClient">
+          <!-- <div class="card" @click="openModalAddNewClient">
             <div class="card-content">
               <div class="content">
-                <p>Pichanga el {{ new Date(matches.matchDate).toLocaleDateString('en-GB')}}</p>
+
+                <p>Pichanga el {{ new Date(matches.matchDate).toLocaleDateString('en-GB')}}</p> 
+                <div>
+
+                </div>
+                <b-tag type="is-warning">Warning</b-tag>
                 <p>En {{ matches.place}}</p>
                 <p>A las {{ new Date(matches.startHour).getHours() }}:{{ new Date(matches.startHour).getMinutes() }}</p>
                 <div><img
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQoj9PhSQgs91v6mPY-Xz5eGwyUZfRjMwWqLd4GnM7EszpCiSWM8_Pumruq8TrJJxfRw&usqp=CAU"
                     class="" alt=""></div>
               </div>
+              <b-button type="is-primary">Primary</b-button>
+            </div>
+          </div> -->
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-2by1">
+                <img src="https://universitario.pe/media/uploads/2020/07/02/nw_i_monu04-1.jpg"
+                  alt="Placeholder image" />
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <!-- <p>{{ matches.id }}</p> -->
+                  <p class="title is-4">Pichanga el {{ new Date(matches.matchDate).toLocaleDateString('en-GB') }}</p>
+                  <p class="subtitle is-6">A las {{ new Date(matches.startHour).getHours() }}:{{ new
+                    Date(matches.startHour).getMinutes() }}</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                iaculis mauris. <a>@bulmaio</a>. <a href="#">#css</a>
+                <a href="#">#responsive</a>
+                <br />
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time> -->
+                <b-tag type="is-success">Han pagado 10 de 10</b-tag>
+
+                <!-- <b-tag type="is-danger">Han pagado 8 de 10</b-tag>
+
+                <b-tag type="is-warning">Han pagado 3 de 10</b-tag> -->
+
+
+              </div>
+
+              <div class="buttons">
+                <b-button class="is-info">Ver convocados</b-button>
+                <b-button class="is-success">Cobrar</b-button>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
       <!-- <notification-bar class="is-info">
-        <div>
+        <div>armalafutbol2024.
           <b-icon
             icon="buffer"
             custom-size="default"
@@ -55,7 +100,7 @@
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
-              <div class="columns is-mobile">
+              <div class="columns is-mobile  is-multiline">
                 <div class="column">
                   <b-field label="Fecha">
                     <b-datepicker v-model="match.dateMatch" locale="en-GB" type="date" placeholder=""
@@ -64,35 +109,46 @@
                   <b-field label="Lugar">
                     <b-input v-model="match.place" type="text" maxlength="30" required />
                   </b-field>
-                  <b-field label="Desde">
-                    <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
+                  <b-field label="Horario">
+                    <b-timepicker placeholder="Empieza " icon="clock" editable :enable-seconds="enableSeconds"
                       :hour-format="hourFormat" :locale="locale" v-model="match.start">
                     </b-timepicker>
-                  </b-field>
-                  <b-field label="Hasta">
-                    <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
+                    <b-timepicker placeholder="Termina " icon="clock" editable :enable-seconds="enableSeconds"
                       :hour-format="hourFormat" :locale="locale" v-model="match.end">
                     </b-timepicker>
                   </b-field>
+                  <div class="column">
+                  <img
+                    src="../assets/field.png"
+                    class="" alt="">
+                </div>
+                  <!-- <b-field label="Hasta">
+                    <b-timepicker placeholder="" icon="clock" editable :enable-seconds="enableSeconds"
+                      :hour-format="hourFormat" :locale="locale" v-model="match.end">
+                    </b-timepicker> 
+                  </b-field>-->
 
                 </div>
 
-                <div class="column"><b-field label="Precio de la cancha"
-                    message="Este monto sera divido entre la cantidad de jugadores">
+                <div class="column">
+                  <b-field label="Precio de la cancha">
                     <b-input v-model="match.price" type="text" maxlength="30" required />
                   </b-field>
                   <b-field label="Cantidad de jugadores">
                     <b-input v-model="match.quantityPlayers" type="text" maxlength="30" required />
                   </b-field>
                   <b-field label="Cuota">
-                    <b-input v-model="match.quote" type="text" maxlength="30" required />
+                    <b-input v-model="match.quote" type="text" maxlength="30" disabled />
+                  </b-field>
+                  <b-field label="Servicio">
+                    <b-input v-model="match.commission" type="text" maxlength="30" disabled />
                   </b-field>
                 </div>
-                <div class="column">
+                <!-- <div class="column">
                   <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQoj9PhSQgs91v6mPY-Xz5eGwyUZfRjMwWqLd4GnM7EszpCiSWM8_Pumruq8TrJJxfRw&usqp=CAU"
-                    class="rotate-image" alt="">
-                </div>
+                    src="https://static.vecteezy.com/system/resources/previews/017/223/050/non_2x/football-soccer-field-and-soccer-ball-green-grass-realistic-3d-illustration-png.png"
+                    class="" alt="">
+                </div> -->
               </div>
 
               <!-- <div class="columns is-mobile">
@@ -223,7 +279,7 @@ export default defineComponent({
       titleStack: ['Gestión', 'Clientes'],
       isCardModalActive: false,
       pageNumber: null,
-      pageSize: 10,
+      pageSize: 20,
       current: 1,
       totalRecords: null,
       states: [],
@@ -262,13 +318,15 @@ export default defineComponent({
         quote: null,
         matchCode: null,
         createdBy: null,
+        commission: null,
       },
       inputStateActive: false,
       inputProvinceActive: false,
       inputDistrictActive: false,
       updateButton: false,
       createButton: true,
-      matchArray: []
+      matchArray: [],
+      enableSeconds :null
     }
   },
   computed: {
@@ -303,12 +361,22 @@ export default defineComponent({
       console.log('old', this.pageNumber)
       this.loadClients()
       console.log('new', this.pageNumber)
-    }
+    },
+    'match.price': function () {
+      this.calculateQuote()
+    },
+    'match.quantityPlayers': function () {
+      this.calculateQuote()
+    },
+    'match.quote': function () {
+      this.calculateCommission()
+    },
+
   },
   created() {
     this.loadMatches()
-    this.loadNationalities()
-    this.loadCountries()
+
+
   },
   methods: {
     openModalAddNewClient() {
@@ -581,13 +649,13 @@ export default defineComponent({
 
     async createNewMatch() {
 
-      var codeGenerated = this.Str_Random(10)
+      var codeGenerated = this.Str_Random(6)
       this.match.matchCode = codeGenerated
       console.log("PARTIDO", this.match)
-      if (this.validateIfFieldsFilled()) {
+     
         const localStorageData = JSON.parse(localStorage.getItem('userData'))
         const token = localStorageData.token
-        const response = await axios.post(`${backendURL}/api/Match`, {
+        const response = await axios.post(`${backendURL}api/Match`, {
           matchDate: this.match.dateMatch,
           startHour: this.match.start,
           endHour: this.match.end,
@@ -596,13 +664,13 @@ export default defineComponent({
           price: this.match.price,
           matchCode: this.match.matchCode,
           quote: this.match.quote,
-          createdBy: this.match.createdBy,
+          createdBy: JSON.parse(localStorage.getItem('userData')).user.id
 
 
         }, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        console.log("PARTIDO", this.Str_Random(10))
+      
         console.log(response.data)
         if (response.data.isSuccess) {
           this.$swal.fire('Pichanga registrada!', '', 'success')
@@ -611,7 +679,7 @@ export default defineComponent({
         } else {
           this.$swal.fire('Hubo un error en el registro', `${response.data.errorMessages}`, 'Revisar')
         }
-      }
+      
       // eslint-disable-next-line new-cap
       // this.$swal.fire({
       //   icon: 'success',
@@ -622,7 +690,7 @@ export default defineComponent({
     },
     Str_Random(length) {
       let result = '';
-      const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
       // Loop to generate characters for the specified length
       for (let i = 0; i <= length; i++) {
@@ -636,19 +704,39 @@ export default defineComponent({
       this.isLoading = true
       const localStorageData = JSON.parse(localStorage.getItem('userData'))
       const token = localStorageData.token
+      const userId = localStorageData.user.id
       this.pageNumber = this.current
-      const response = await axios.get(`${backendURL}/api/Match?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`, {
+      const response = await axios.get(`${backendURL}Match/${userId}?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      this.totalRecords = response.data.totalRecords
-      this.current = this.pageNumber
-      this.info = response.data.result
-      var matchRows = Math.round(this.totalRecords / 4)
-      this.isLoading = false
-      this.matchArray = response.data.result
+
+      this.matchArray=[response.data.result]
+      console.log(this.matchArray)
+      // this.totalRecords = response.data.totalRecords
+      // this.current = this.pageNumber
+      // this.info = response.data.result
+      // this.isLoading = false
+      // this.matchArray = response.data.result
 
       // return this.info
     },
+
+    calculateQuote() {
+
+
+      this.match.quote = this.match.price / this.match.quantityPlayers
+
+      console.log("CUOTA", this.match.quote)
+    },
+
+    calculateCommission() {
+
+
+      this.match.commission = this.match.price * 0.05
+
+      console.log("comision", this.match.commission)
+    },
+
 
   }
 })

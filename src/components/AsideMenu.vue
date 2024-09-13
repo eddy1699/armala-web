@@ -11,7 +11,7 @@
         <b-icon icon="menu" />
       </a>
       <div class="aside-tools-label">
-        <span><b>Tesoro Punto</b></span>
+        <span><b>Armala</b></span>
       </div>
     </div>
     <div class="menu is-menu-main">
