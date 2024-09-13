@@ -11,20 +11,11 @@
       >
         Dashboard
       </router-link> -->
-      <b-button
-        slot="right"
-        label="Armar un partido"
-        type="is-info"
-        @click="openModalAddNewClient"
-      />
+      <b-button slot="right" label="Armar un partido" type="is-info" @click="openModalAddNewClient" />
     </hero-bar>
     <section class="section is-main-section">
       <div class="columns is-multiline is-desktop">
-        <div
-          class="column is-one-quarter"
-          v-for="(matches, index) in matchArray"
-          :key="index"
-        >
+        <div class="column is-one-quarter" v-for="(matches, index) in matchArray" :key="index">
           <!-- <div class="card" @click="openModalAddNewClient">
             <div class="card-content">
               <div class="content">
@@ -46,10 +37,8 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-2by1">
-                <img
-                  src="https://universitario.pe/media/uploads/2020/07/02/nw_i_monu04-1.jpg"
-                  alt="Placeholder image"
-                />
+                <img src="https://universitario.pe/media/uploads/2020/07/02/nw_i_monu04-1.jpg"
+                  alt="Placeholder image" />
               </figure>
             </div>
             <div class="card-content">
@@ -113,44 +102,18 @@
               <div class="columns is-mobile is-multiline">
                 <div class="column">
                   <b-field label="Fecha">
-                    <b-datepicker
-                      v-model="match.dateMatch"
-                      locale="en-GB"
-                      type="date"
-                      placeholder=""
-                      icon="calendar-today"
-                      position="is-bottom-left"
-                      trap-focus
-                    />
+                    <b-datepicker v-model="match.dateMatch" locale="en-GB" type="date" placeholder=""
+                      icon="calendar-today" position="is-bottom-left" trap-focus />
                   </b-field>
                   <b-field label="Lugar">
-                    <b-input
-                      v-model="match.place"
-                      type="text"
-                      maxlength="30"
-                      required
-                    />
+                    <b-input v-model="match.place" type="text" maxlength="30" required />
                   </b-field>
                   <b-field label="Horario">
-                    <b-timepicker
-                      placeholder="Empieza "
-                      icon="clock"
-                      editable
-                      :enable-seconds="enableSeconds"
-                      :hour-format="hourFormat"
-                      :locale="locale"
-                      v-model="match.start"
-                    >
+                    <b-timepicker placeholder="Empieza " icon="clock" editable :enable-seconds="enableSeconds"
+                      :hour-format="hourFormat" :locale="locale" v-model="match.start">
                     </b-timepicker>
-                    <b-timepicker
-                      placeholder="Termina "
-                      icon="clock"
-                      editable
-                      :enable-seconds="enableSeconds"
-                      :hour-format="hourFormat"
-                      :locale="locale"
-                      v-model="match.end"
-                    >
+                    <b-timepicker placeholder="Termina " icon="clock" editable :enable-seconds="enableSeconds"
+                      :hour-format="hourFormat" :locale="locale" v-model="match.end">
                     </b-timepicker>
                   </b-field>
                   <div class="column">
@@ -165,36 +128,16 @@
 
                 <div class="column">
                   <b-field label="Precio de la cancha">
-                    <b-input
-                      v-model="match.price"
-                      type="text"
-                      maxlength="30"
-                      required
-                    />
+                    <b-input v-model="match.price" type="text" maxlength="30" required />
                   </b-field>
                   <b-field label="Cantidad de jugadores">
-                    <b-input
-                      v-model="match.quantityPlayers"
-                      type="text"
-                      maxlength="30"
-                      required
-                    />
+                    <b-input v-model="match.quantityPlayers" type="text" maxlength="30" required />
                   </b-field>
                   <b-field label="Cuota">
-                    <b-input
-                      v-model="match.quote"
-                      type="text"
-                      maxlength="30"
-                      disabled
-                    />
+                    <b-input v-model="match.quote" type="text" maxlength="30" disabled />
                   </b-field>
                   <b-field label="Servicio">
-                    <b-input
-                      v-model="match.commission"
-                      type="text"
-                      maxlength="30"
-                      disabled
-                    />
+                    <b-input v-model="match.commission" type="text" maxlength="30" disabled />
                   </b-field>
                 </div>
                 <!-- <div class="column">
@@ -229,18 +172,8 @@
                 <div class="field is-grouped is-grouped-right" />
               </div>
               <b-button label="Cancelar" @click="$emit('close')" />
-              <b-button
-                v-show="createButton"
-                label="Crear"
-                type="is-primary"
-                @click="createNewMatch"
-              />
-              <b-button
-                v-show="updateButton"
-                label="Actualizar"
-                type="is-primary"
-                @click="updateClient"
-              />
+              <b-button v-show="createButton" label="Crear" type="is-primary" @click="createNewMatch" />
+              <b-button v-show="updateButton" label="Actualizar" type="is-primary" @click="updateClient" />
             </footer>
           </div>
         </form>
@@ -258,11 +191,7 @@
             </div>
           </div>
         </div> -->
-        <b-loading
-          v-model="isLoadingModal"
-          :is-full-page="false"
-          :can-cancel="false"
-        >
+        <b-loading v-model="isLoadingModal" :is-full-page="false" :can-cancel="false">
           Cargando información
         </b-loading>
       </b-modal>

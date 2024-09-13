@@ -3,30 +3,16 @@
     <router-link slot="button" to="/" class="button is-small">
       Dashboard
     </router-link>
-    <img
-      src="../../assets/Armala.png"
-      alt=""
-      height="250"
-      width="250"
-      class="center"
-    />
+    <img src="../../assets/Armala.png" alt="" height="250" width="250" class="center" />
     <form method="POST" @submit.prevent="login">
       <b-field label="Usuario">
         <b-input v-model="form.email" name="user" type="text" required />
       </b-field>
 
       <b-field label="Contraseña">
-        <b-input
-          v-model="form.password"
-          type="password"
-          name="password"
-          required
-        />
+        <b-input v-model="form.password" type="password" name="password" required />
       </b-field>
-      <div
-        class="g-recaptcha"
-        data-sitekey="6Lfm3FYoAAAAAOTGDrnZcGShmF3oodUREPrAyA9r"
-      />
+      <div class="g-recaptcha" data-sitekey="6Lfm3FYoAAAAAOTGDrnZcGShmF3oodUREPrAyA9r" />
       <b-field>
         <b-checkbox v-model="form.remember" type="is-black" class="is-thin">
           Recordarme
@@ -37,22 +23,11 @@
 
       <b-field>
         <div class="control">
-          <b-button
-            native-type="submit"
-            type=""
-            class="btn"
-            :loading="isLoading"
-            :disabled="formCompleted == false"
-            @click="login"
-          >
+          <b-button native-type="submit" type="" class="btn" :loading="isLoading" :disabled="formCompleted == false"
+            @click="login">
             Ingresar
           </b-button>
-          <b-button
-            type="is-ghost"
-            tag="router-link"
-            to="register "
-            :disabled="false"
-          >
+          <b-button type="is-ghost" tag="router-link" to="register " :disabled="false">
             Registrarse
           </b-button>
 
