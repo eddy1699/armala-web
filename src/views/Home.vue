@@ -89,7 +89,10 @@
                 <b-button class="is-info">
                   Ver convocados
                 </b-button>
-                <b-button class="is-success">
+                <b-button
+                  class="is-success"
+                  @click="sendMoney"
+                >
                   Cobrar
                 </b-button>
               </div>
@@ -852,6 +855,31 @@ export default defineComponent({
       this.match.commission = this.match.price * 0.05
 
       console.log('comision', this.match.commission)
+    },
+    sendMoney () {
+      const userData = JSON.parse(localStorage.getItem('userData'))
+
+      this.$swal.fire({
+        title: 'Listo para pagar tu pichanga?',
+        text: 'Se enviara el dinero a la siguiente cuenta /n Cuenta Bancaria:',
+        html: '<p>Cuenta Interbancaria:</p>' + userData.user.cellphoneNumber,
+        // text: '',
+        // text: 'Cuenta Interbancaria:',
+        // text: 'Banco:',
+        // icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal.fire({
+            title: 'Deleted!',
+            text: 'Your file has been deleted.',
+            icon: 'success'
+          })
+        }
+      })
     }
   }
 })
