@@ -58,9 +58,10 @@
                   <!-- <p>{{ matches.id }}</p> -->
                   <p class="title is-4">
                     Pichanga el
-                    {{
-                      new Date(matches.matchDate).toLocaleDateString("en-GB")
-                    }}
+                    <!-- {{
+                      new Date(matches.id).toLocaleDateString("en-GB")
+                    }} -->
+                    {{ matches.id }}
                   </p>
                   <p class="subtitle is-6">
                     A las {{ new Date(matches.startHour).getHours() }}:{{
@@ -76,8 +77,23 @@
                 <a href="#">#responsive</a>
                 <br />
                 <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time> -->
-                <b-tag type="is-success">
-                  Han pagado 10 de 10
+                <b-tag
+                  v-if="matches.playersPaid==matches.numberPlayer || matches.playersPaid>=matches.numberPlayer*0.7"
+                  type="is-success"
+                >
+                  Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
+                </b-tag>
+                <b-tag
+                  v-if="matches.playersPaid<=matches.numberPlayer*0.5"
+                  type="is-warning"
+                >
+                  Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
+                </b-tag>
+                <b-tag
+                  v-if="matches.playersPaid==0"
+                  type="is-danger"
+                >
+                  Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
                 </b-tag>
 
                 <!-- <b-tag type="is-danger">Han pagado 8 de 10</b-tag>
@@ -86,7 +102,10 @@
               </div>
 
               <div class="buttons">
-                <b-button class="is-info">
+                <b-button
+                  class="is-info"
+                  @click="openModalSeePlayers(matches.id)"
+                >
                   Ver convocados
                 </b-button>
                 <b-button
@@ -292,10 +311,10 @@
         >
           Cargando información
         </b-loading>
-      </b-modal>
-      <!-- <hr> -->
 
-      <!-- <notification-bar class="is-info">
+        <!-- <hr> -->
+
+        <!-- <notification-bar class="is-info">
         <div>
           <b-icon
             icon="buffer"
@@ -305,7 +324,7 @@
         </div>
       </notification-bar> -->
 
-      <!-- <card-component class="has-table has-mobile-sort-spaced">
+        <!-- <card-component class="has-table has-mobile-sort-spaced">
         <clients-table-sample
           checkable
         />
@@ -313,7 +332,7 @@
 
       <hr> -->
 
-      <!-- <notification-bar class="is-info">
+        <!-- <notification-bar class="is-info">
         <div>
           <b-icon
             icon="buffer"
@@ -323,9 +342,92 @@
         </div>
       </notification-bar> -->
 
-      <!-- <card-component class="has-table has-thead-hidden">
+        <!-- <card-component class="has-table has-thead-hidden">
         <clients-table-sample is-empty />
       </card-component> -->
+      </b-modal>
+      <b-modal
+        v-model="isCardModalActive2"
+        :width="640"
+        scroll="keep"
+      >
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+              <b-table
+                :data="isEmpty ? [] : players"
+                :bordered="isBordered"
+                :striped="isStriped"
+                :narrowed="isNarrowed"
+                :hoverable="isHoverable"
+                :loading="false"
+                :focusable="isFocusable"
+                :mobile-cards="hasMobileCards"
+              >
+                <b-table-column
+                  v-slot="props"
+                  field="id"
+                  label="#"
+                  width="40"
+                  :td-attrs="columnTdAttrs"
+                  numeric
+                >
+                  {{ props.index+1 }}
+                </b-table-column>
+
+                <b-table-column
+                  v-slot="props"
+                  field="first_name"
+                  label="Jugador"
+                  :td-attrs="columnTdAttrs"
+                >
+                  {{ props.row.user.name }} {{ props.row.user.lastName }}
+                </b-table-column>
+
+                <b-table-column
+                  v-slot="props"
+                  field="date"
+                  label="Estado de pago"
+                  :th-attrs="dateThAttrs"
+                  :td-attrs="columnTdAttrs"
+                  centered
+                >
+                  <span
+                    v-if="props.row.paymentStatus==0"
+                    class="tag is-danger"
+                  >
+                    Pendiente
+                  </span>
+                  <span
+                    v-if="props.row.paymentStatus==1"
+                    class="tag is-success"
+                  >
+                    Pagado
+                  </span>
+                </b-table-column>
+                <b-table-column
+                  v-slot="props"
+                  field="date"
+                  label="Cuota"
+                  :th-attrs="dateThAttrs"
+                  :td-attrs="columnTdAttrs"
+                  centered
+                >
+                  {{ props.row.match.quote }}
+                </b-table-column>
+
+                <template #empty>
+                  <div class="has-text-centered">
+                    No records
+                  </div>
+                </template>
+              </b-table>
+            </div>
+            <p>Total de Jugadores </p>
+            <p>Dinero recaudado {{ collected }}</p>
+          </div>
+        </div>
+      </b-modal>
     </section>
   </div>
 </template>
@@ -352,16 +454,34 @@ export default defineComponent({
     // NotificationBar
   },
   data () {
+    const data = [
+      { id: 1, first_name: 'Jesse', last_name: 'Simmons', date: '2016/10/15 13:43:27', gender: 'Male' },
+      { id: 2, first_name: 'John', last_name: 'Jacobs', date: '2016/12/15 06:00:53', gender: 'Male' },
+      { id: 3, first_name: 'Tina', last_name: 'Gilbert', date: '2016/04/26 06:26:28', gender: 'Female' },
+      { id: 4, first_name: 'Clarence', last_name: 'Flores', date: '2016/04/10 10:28:46', gender: 'Male' },
+      { id: 5, first_name: 'Anne', last_name: 'Lee', date: '2016/12/06 14:38:38', gender: 'Female' },
+      { id: 'Total', gender: '2 Females, 3 Males' }
+    ]
     return {
+      data,
+      isEmpty: false,
+      isBordered: false,
+      isStriped: false,
+      isNarrowed: false,
+      isHoverable: false,
+      isFocusable: false,
+      isLoading: false,
+      hasMobileCards: true,
+
       hourFormat: undefined, // Browser locale
       locale: undefined,
       checkable: Boolean,
-      isEmpty: Boolean,
+      // isEmpty: Boolean,
       perPage: {
         type: Number,
         default: 10
       },
-      isLoading: true,
+      // isLoading: true,
       isLoadingModal: false,
       checkedRows: [],
       isModalActive: false,
@@ -371,6 +491,7 @@ export default defineComponent({
       countries: [],
       titleStack: ['Gestión', 'Clientes'],
       isCardModalActive: false,
+      isCardModalActive2: false,
       pageNumber: null,
       pageSize: 20,
       current: 1,
@@ -418,7 +539,10 @@ export default defineComponent({
       updateButton: false,
       createButton: true,
       matchArray: [],
-      enableSeconds: null
+      enableSeconds: null,
+      players: [],
+      contador: 0,
+      playersPaid: 0
     }
   },
   computed: {
@@ -490,6 +614,10 @@ export default defineComponent({
       this.client.phoneNumber = ''
       this.client.cellphoneNumber = ''
       this.client.email = ''
+    },
+    openModalSeePlayers (id) {
+      this.isCardModalActive2 = true
+      this.getPlayersByMatch(id)
     },
     async viewClient (id) {
       this.updateButton = true
@@ -828,13 +956,13 @@ export default defineComponent({
       const userId = localStorageData.user.id
       this.pageNumber = this.current
       const response = await axios.get(
-        `${backendURL}api/Match/${userId}?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`,
+        `${backendURL}api/Match//MatchId/${userId}?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
 
-      this.matchArray = [response.data.result]
+      this.matchArray = response.data.result
       console.log(this.matchArray)
       // this.totalRecords = response.data.totalRecords
       // this.current = this.pageNumber
@@ -878,6 +1006,37 @@ export default defineComponent({
             text: 'Your file has been deleted.',
             icon: 'success'
           })
+        }
+      })
+    },
+
+    async getPlayersByMatch (id) {
+      console.log('hola')
+      this.isLoading = true
+      const localStorageData = JSON.parse(localStorage.getItem('userData'))
+      const token = localStorageData.token
+      this.pageNumber = this.current
+      const response = await axios.get(
+        `${backendURL}api/UserMatch/PlayersMatch/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      this.players = response.data.result
+      let totalQuote = 0
+
+      for (let i = 0; i < this.players.length; i++) {
+        console.log('Pago' + totalQuote)
+        if (this.players[i].paymentStatus === '1') {
+          totalQuote = totalQuote + this.players[i].match.quote
+        }
+      }
+      console.log('Pago' + totalQuote)
+      console.log('Recaudado', totalQuote)
+      this.collected = totalQuote
+      this.players.forEach(player => {
+        if (player.paymentStatus === '1') {
+          this.playersPaid++
         }
       })
     }
