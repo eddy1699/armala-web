@@ -11,6 +11,7 @@
     "lint:fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "@lyracom/embedded-form-glue": "^1.4.2",
     "axios": "^0.26.1",
     "buefy": "^0.9.13",
     "bulma": "^0.9.4",

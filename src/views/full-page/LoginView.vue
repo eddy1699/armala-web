@@ -186,7 +186,7 @@ export default defineComponent({
           localStorage.getItem('userData')
         ).token
         if (tokenLocalStorage != null) {
-          this.$router.push('/clientes')
+          this.$router.push('/home')
         }
       } catch (error) {
         // console.warn(error)

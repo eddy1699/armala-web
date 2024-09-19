@@ -1,9 +1,9 @@
 <!-- eslint-disable new-cap -->
 <template>
   <div>
-    <title-bar :title-stack="titleStack" />
+    <!-- <title-bar :title-stack="titleStack" /> -->
     <hero-bar>
-      Inicio
+      Bienvenido
       <!-- <router-link
         slot="right"
         to="/"
@@ -58,14 +58,15 @@
                   <!-- <p>{{ matches.id }}</p> -->
                   <p class="title is-4">
                     Pichanga el
-                    <!-- {{
-                      new Date(matches.id).toLocaleDateString("en-GB")
-                    }} -->
-                    {{ matches.id }}
+                    {{
+                      new Date(matches.matchDate).toLocaleDateString("en-GB")
+                    }}
                   </p>
                   <p class="subtitle is-6">
-                    A las {{ new Date(matches.startHour).getHours() }}:{{
+                    Horario: {{ new Date(matches.startHour).getHours() }}:{{
                       new Date(matches.startHour).getMinutes()
+                    }} - {{ new Date(matches.endHour).getHours() }}:{{
+                      new Date(matches.endHour).getMinutes()
                     }}
                   </p>
                 </div>
@@ -78,19 +79,19 @@
                 <br />
                 <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time> -->
                 <b-tag
-                  v-if="matches.playersPaid==matches.numberPlayer || matches.playersPaid>=matches.numberPlayer*0.7"
+                  v-if="matches.playersPaid>=matches.numberPlayer"
                   type="is-success"
                 >
                   Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
                 </b-tag>
                 <b-tag
-                  v-if="matches.playersPaid<=matches.numberPlayer*0.5"
+                  v-else-if="matches.playersPaid>=matches.numberPlayer*0.5"
                   type="is-warning"
                 >
                   Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
                 </b-tag>
                 <b-tag
-                  v-if="matches.playersPaid==0"
+                  v-else
                   type="is-danger"
                 >
                   Han pagado {{ matches.playersPaid }} de {{ matches.numberPlayer }}
@@ -109,10 +110,18 @@
                   Ver convocados
                 </b-button>
                 <b-button
+                  v-if="matches.createdBy==sessionUserId "
                   class="is-success"
                   @click="sendMoney"
                 >
                   Cobrar
+                </b-button>
+                <b-button
+                  class="is-success"
+                  v-if="matches.createdBy!=sessionUserId "
+                  @click="payQuote"
+                >
+                  Pagar cuota
                 </b-button>
               </div>
             </div>
@@ -428,6 +437,23 @@
           </div>
         </div>
       </b-modal>
+      <b-modal
+        v-model="isPaymentModalActive"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-label="Example Modal"
+        close-button-aria-label="Close"
+        aria-modal
+      >
+        <template #default="props">
+          <render-elements
+            v-bind="formProps"
+            @close="props.close"
+          />
+        </template>
+      </b-modal>
     </section>
   </div>
 </template>
@@ -445,25 +471,27 @@ import { mapState } from 'vuex'
 import axios from 'axios'
 import { name } from 'lodash/find'
 import * as chartConfig from '@/components/Charts/chart.config.js'
+import RenderElements from '@/components/RenderElements.vue'
+const ModalForm = { props: ['email', 'password', 'canCancel'] }
 export default defineComponent({
   name: 'Home',
   components: {
     HeroBar,
-    TitleBar
+    // TitleBar,
+    RenderElements
     // ClientsTableSample
     // NotificationBar
   },
   data () {
-    const data = [
-      { id: 1, first_name: 'Jesse', last_name: 'Simmons', date: '2016/10/15 13:43:27', gender: 'Male' },
-      { id: 2, first_name: 'John', last_name: 'Jacobs', date: '2016/12/15 06:00:53', gender: 'Male' },
-      { id: 3, first_name: 'Tina', last_name: 'Gilbert', date: '2016/04/26 06:26:28', gender: 'Female' },
-      { id: 4, first_name: 'Clarence', last_name: 'Flores', date: '2016/04/10 10:28:46', gender: 'Male' },
-      { id: 5, first_name: 'Anne', last_name: 'Lee', date: '2016/12/06 14:38:38', gender: 'Female' },
-      { id: 'Total', gender: '2 Females, 3 Males' }
-    ]
     return {
-      data,
+      formProps: {
+        email: 'evan@you.com',
+        password: 'testing'
+      },
+      sessionUserId: null,
+      collectMoney: true,
+      payQuoteButton: false,
+      isPaymentModalActive: false,
       isEmpty: false,
       isBordered: false,
       isStriped: false,
@@ -964,6 +992,7 @@ export default defineComponent({
 
       this.matchArray = response.data.result
       console.log(this.matchArray)
+      this.sessionUserId = JSON.parse(localStorage.getItem('userData')).user.id
       // this.totalRecords = response.data.totalRecords
       // this.current = this.pageNumber
       // this.info = response.data.result
@@ -971,6 +1000,8 @@ export default defineComponent({
       // this.matchArray = response.data.result
 
       // return this.info
+      // this.collectMoney = true
+      // this.payQuoteButton = false
     },
 
     calculateQuote () {
@@ -1039,6 +1070,10 @@ export default defineComponent({
           this.playersPaid++
         }
       })
+    },
+    payQuote () {
+      console.log('Pagar Quota')
+      this.isPaymentModalActive = true
     }
   }
 })

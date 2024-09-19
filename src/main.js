@@ -19,7 +19,7 @@ Vue.use(VueSweetalert2)
 store.dispatch('fetch', 'clients')
 
 /* Default title tag */
-const defaultDocumentTitle = 'Admin Travel Agency'
+const defaultDocumentTitle = 'Armala'
 
 /* Collapse mobile aside menu on route change & set document title from route meta */
 router.afterEach(to => {
