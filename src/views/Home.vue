@@ -184,7 +184,7 @@
                   <b-field label="Horario">
                     <b-timepicker
                       v-model="match.start"
-                      placeholder="Empieza "
+                      placeholder="Empieza:"
                       icon="clock"
                       editable
                       :enable-seconds="enableSeconds"
@@ -193,7 +193,7 @@
                     />
                     <b-timepicker
                       v-model="match.end"
-                      placeholder="Termina "
+                      placeholder="Termina:"
                       icon="clock"
                       editable
                       :enable-seconds="enableSeconds"
