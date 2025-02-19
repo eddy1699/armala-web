@@ -9,7 +9,6 @@
         <!-- if you want only cards, replace kr-smart-form by kr-embedded -->
         <div
           class="kr-smart-form"
-          kr-card-form-expanded
         />
       </div>
     </div>
@@ -22,6 +21,64 @@
 <script>
 /* import embedded-form-glue library */
 import KRGlue from '@lyracom/embedded-form-glue'
+
+export default {
+  name: 'AttachForm',
+  data () {
+    return {
+      message: ''
+    }
+  },
+  async mounted () {
+    const endpoint = 'https://api.micuentaweb.pe' // format: static.my.psp.domain
+    const publicKey = '40398241:publickey_31NpOBRpc527Wsr26TnHFfAQTh36z4GagzOwHDgU6aNtv' // format: 999999999:testpublickey_XXXXXXXXXX
+
+    // Generate the form token
+    try {
+      const res = await fetch('http://localhost:3000/createPayment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentConf: { amount: 10000, currency: 'PEN' }
+        })
+      })
+      const formToken = await res.text()
+      // Load the remote library
+      const { KR } = await KRGlue.loadLibrary(endpoint, publicKey)
+      // Set the minimal configuration
+      await KR.setFormConfig({
+        formToken,
+        'kr-language': 'es-ES'
+      })
+
+      // Custom payment callback
+      await KR.onSubmit(async paymentData => {
+        await this.validatePayment(paymentData)
+      })
+
+      await KR.renderElements('#myPaymentForm') // Create a payment form
+    } catch (error) {
+      error => (this.message = error + ' (see console for more details)')
+    }
+  },
+  methods: {
+    /* Validate the payment data */
+    async validatePayment (paymentData) {
+      const res = await fetch('http://localhost:3000/validatePayment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentData)
+      })
+      if (res.status === 200) this.message = 'Payment successful!'
+      return false // Return false to prevent the redirection
+    }
+  }
+}
+</script>
+
+<!-- <script>
+/* import embedded-form-glue library */
+import KRGlue from '@lyracom/embedded-form-glue'
 import axios from 'axios'
 export default {
   name: 'AttachForm',
@@ -29,6 +86,9 @@ export default {
     return {
       message: ''
     }
+  },
+  created () {
+    console.log('Hola')
   },
   async mounted () {
     const endpoint = 'https://api.micuentaweb.pe' // format: static.my.psp.domain
@@ -41,8 +101,8 @@ export default {
       // Realizar la solicitud POST utilizando Axios
       const localStorageData = JSON.parse(localStorage.getItem('userData'))
       const token = localStorageData.token
-      console.log(token)
-      const res = await axios.post('https://localhost:7001/api/Match/MatchId', {
+      console.log('token ', token)
+      const res = await axios.post('http://localhost:3000/createPayment', {
         paymentConf: {
           amount: 10000,
           currency: 'PEN'
@@ -120,7 +180,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

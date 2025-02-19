@@ -117,9 +117,9 @@
                   Cobrar
                 </b-button>
                 <b-button
+                  v-if="matches.createdBy==sessionUserId "
                   class="is-success"
-                  v-if="matches.createdBy!=sessionUserId "
-                  @click="payQuote"
+                  @click="payQuote(matches.id)"
                 >
                   Pagar cuota
                 </b-button>
@@ -437,6 +437,9 @@
           </div>
         </div>
       </b-modal>
+
+      <!-- hoacias -->
+
       <b-modal
         v-model="isPaymentModalActive"
         has-modal-card
@@ -984,7 +987,7 @@ export default defineComponent({
       const userId = localStorageData.user.id
       this.pageNumber = this.current
       const response = await axios.get(
-        `${backendURL}api/Match//MatchId/${userId}?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`,
+        `${backendURL}/api/Match/MatchId/${userId}?PageNumber=${this.pageNumber}&PageSize=${this.pageSize}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -1017,11 +1020,11 @@ export default defineComponent({
     },
     sendMoney () {
       const userData = JSON.parse(localStorage.getItem('userData'))
-
+      console.log(userData)
       this.$swal.fire({
         title: 'Listo para pagar tu pichanga?',
         text: 'Se enviara el dinero a la siguiente cuenta /n Cuenta Bancaria:',
-        html: '<p>Cuenta Interbancaria:</p>' + userData.user.cellphoneNumber,
+        html: '<p>Cuenta Interbancaria:</p>' + userData.user.bankAccountNumber + '<br>' + '<p>Cuenta Interbancaria:</p>' + userData.user.bankAccountNumber,
         // text: '',
         // text: 'Cuenta Interbancaria:',
         // text: 'Banco:',
@@ -1029,7 +1032,7 @@ export default defineComponent({
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Enviar dinero'
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal.fire({
@@ -1048,7 +1051,7 @@ export default defineComponent({
       const token = localStorageData.token
       this.pageNumber = this.current
       const response = await axios.get(
-        `${backendURL}api/UserMatch/PlayersMatch/${id}`,
+        `${backendURL}/api/UserMatch/PlayersMatch/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -1071,9 +1074,45 @@ export default defineComponent({
         }
       })
     },
-    payQuote () {
-      console.log('Pagar Quota')
-      this.isPaymentModalActive = true
+    async payQuote (idMatch) {
+      try {
+        console.log('Pagar Quota')
+
+        // Activate the modal
+        this.isPaymentModalActive = true
+
+        // Fetch match data
+        const match = await this.getMatchById(idMatch)
+
+        // Log the match data
+        console.log('Match Data:', match)
+      } catch (error) {
+        console.error('Error fetching match:', error)
+      }
+    },
+    async getMatchById (idMatch) {
+      console.log('getMatchById')
+      const localStorageData = JSON.parse(localStorage.getItem('userData'))
+      const token = localStorageData.token
+      const response = await axios.get(
+        `${backendURL}/api/Match/${idMatch}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+
+      // console.log(response.data.result)
+
+      return response.data.result
+      // this.totalRecords = response.data.totalRecords
+      // this.current = this.pageNumber
+      // this.info = response.data.result
+      // this.isLoading = false
+      // this.matchArray = response.data.result
+
+      // return this.info
+      // this.collectMoney = true
+      // this.payQuoteButton = false
     }
   }
 })
