@@ -453,7 +453,9 @@
         <template #default="props">
           <render-elements
             v-bind="formProps"
+            :token-message="tokenMessage"
             @close="props.close"
+            @tengo_resultados="onResultados"
           />
         </template>
       </b-modal>
@@ -491,6 +493,7 @@ export default defineComponent({
         email: 'evan@you.com',
         password: 'testing'
       },
+      tokenMessage: 'Hola desde el componente padre',
       sessionUserId: null,
       collectMoney: true,
       payQuoteButton: false,
@@ -1089,6 +1092,17 @@ export default defineComponent({
       } catch (error) {
         console.error('Error fetching match:', error)
       }
+    },
+    onResultados (paymentData) {
+      console.log('Volvimos wachooo')
+      this.isPaymentModalActive = false
+      this.$swal.fire({
+        icon: 'success',
+        title: 'Pago exitoso!',
+        showConfirmButton: false,
+        timer: 3000
+      })
+      console.log(paymentData)
     },
     async getMatchById (idMatch) {
       console.log('getMatchById')
