@@ -49,6 +49,30 @@ export default {
   },
 
   mounted () {
+    // Load External CSS
+
+    const link = document.createElement('link')
+
+    link.rel = 'stylesheet'
+
+    link.href = 'https://api.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon-reset.css'
+
+    document.head.appendChild(link)
+
+    // Load External JS
+
+    const script = document.createElement('script')
+
+    script.src = 'https://api.micuentaweb.pe/static/js/krypton-client/V4.0/ext/neon.js'
+
+    script.async = true
+
+    script.onload = () => {
+      console.log('External script loaded!')
+    }
+
+    document.body.appendChild(script)
+
     // this.createPayment()
     // const endpoint = 'https://api.micuentaweb.pe' // format: static.my.psp.domain
     // const publicKey = '40398241:testpublickey_xwnWM49YpsC68D60VPaHrDZjGTd1P3A49cO43LzuvVpXA' // format: 999999999:testpublickey_XXXXXXXXXX
