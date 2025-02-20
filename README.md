@@ -1,4 +1,4 @@
-# [Admin One  — Free Vue Bulma Buefy Dashboard](https://justboil.me/bulma-admin-template/free-vue-buefy-dashboard/)
+<!-- # [Admin One  — Free Vue Bulma Buefy Dashboard](https://justboil.me/bulma-admin-template/free-vue-buefy-dashboard/)
 
 [![version](https://img.shields.io/github/v/release/vikdiesel/admin-one-vue-bulma-dashboard)](https://justboil.me/bulma-admin-template/free-vue-buefy-dashboard/)  [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://justboil.me/bulma-admin-template/free-vue-buefy-dashboard/)
 
@@ -161,4 +161,4 @@ The issue list is reserved exclusively for bug reports and feature requests. Tha
 - [Vue.js](https://vuejs.org)
 - [Vue CLI](https://cli.vuejs.org)
 - [Buefy](https://buefy.org)
-- [Bulma](https://bulma.io)
+- [Bulma](https://bulma.io) -->
