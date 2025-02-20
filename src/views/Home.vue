@@ -933,7 +933,7 @@ export default defineComponent({
       const localStorageData = JSON.parse(localStorage.getItem('userData'))
       const token = localStorageData.token
       const response = await axios.post(
-        `${backendURL}api/Match`,
+        `${backendURL}/api/Match`,
         {
           matchDate: this.match.dateMatch,
           startHour: this.match.start,
