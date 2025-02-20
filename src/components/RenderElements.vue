@@ -8,7 +8,8 @@
       >
         <!-- if you want only cards, replace kr-smart-form by kr-embedded -->
         <div
-          class="kr-embedded"
+          class="kr-smart-form"
+          kr-popin
         />
       </div>
     </div>
