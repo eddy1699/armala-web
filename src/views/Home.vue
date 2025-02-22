@@ -1136,7 +1136,13 @@ export default defineComponent({
       const localStorageData = JSON.parse(localStorage.getItem('userData'))
       const token = localStorageData.token
       const response = await axios.put(
-        `${backendURL}/api/UserMatch/PlayersMatch/${idPlayer}`,
+        `${backendURL}/api/UserMatch/PlayersMatch/${idPlayer}`, {
+          idUsertMatch: this.match.dateMatch,
+          idUser: this.match.start,
+          idMatch: this.match.end,
+          paymentStatus: this.match.quantityPlayers,
+          updatedDate: this.match.quantityPlayers
+        },
         {
           headers: { Authorization: `Bearer ${token}` }
         }
