@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    <h1>Pagar</h1>
     <div class="container">
+      <h1>Pagar</h1>
       <div
         id="myPaymentForm"
         class="paymentForm"
@@ -28,6 +28,7 @@ import Hex from 'crypto-js/enc-hex'
 import axios from 'axios'
 export default {
   name: 'AttachForm',
+  props: ['payData'],
   data () {
     return {
       message: '',
@@ -41,7 +42,7 @@ export default {
     }
   },
   created () {
-    console.log('Token', this.tokenMessage)
+    console.log('Token', this.payData)
     this.createPayment()
   },
   resetComponent () {
@@ -178,11 +179,11 @@ export default {
       const token = localStorageData.token
       this.response = await axios.post(
         `${backendURL}/api/Match/PayMatchPlayerQuote`, {
-          amount: '100',
-          email: 'edgardosamame@gmail.com',
-          firstName: 'Edgardo',
-          lastName: 'Samame',
-          phoneNumber: '936430407'
+          amount: this.payData.quote * 100,
+          email: localStorageData.user.email,
+          firstName: localStorageData.user.name,
+          lastName: localStorageData.user.lastName,
+          phoneNumber: localStorageData.user.cellphoneNumber
         },
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -208,9 +209,8 @@ export default {
           hmacSHA256(JSON.stringify(answer), 'lVsrPlB97t5fH8YtrEjU8UhJsAkrRBQZPnatH1ezISa9n')
         )
         if (hash === answerHash) {
+          if (paymentData.clientAnswer.orderStatus === 'PAID') { this.$emit('tengo_resultados', paymentData) }
           this.message = 'Payment successful!'
-          this.$emit('tengo_resultados', paymentData)
-          console.log('Payment successful!')
         } else {
           this.message = ' Payment hash mismatch'
           console.log('Payment UNsuccessful!')

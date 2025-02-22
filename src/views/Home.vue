@@ -452,8 +452,10 @@
       >
         <template #default="props">
           <render-elements
+            :key="componentKey"
             v-bind="formProps"
             :token-message="tokenMessage"
+            :payData="quoteData"
             @close="props.close"
             @tengo_resultados="onResultados"
           />
@@ -493,6 +495,7 @@ export default defineComponent({
         email: 'evan@you.com',
         password: 'testing'
       },
+      componentKey: 0,
       tokenMessage: 'Hola desde el componente padre',
       sessionUserId: null,
       collectMoney: true,
@@ -506,7 +509,7 @@ export default defineComponent({
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true,
-
+      quoteData: null,
       hourFormat: undefined, // Browser locale
       locale: undefined,
       checkable: Boolean,
@@ -1079,22 +1082,22 @@ export default defineComponent({
     },
     async payQuote (idMatch) {
       try {
-        console.log('Pagar Quota')
-
-        // Activate the modal
-        this.isPaymentModalActive = true
-
-        // Fetch match data
         const match = await this.getMatchById(idMatch)
-
+        this.quoteData = match
+        console.log('Pagar Quota')
+        this.componentKey += 1
+        // Activate the modal
+        // // Fetch match data
         // Log the match data
         console.log('Match Data:', match)
+        this.isPaymentModalActive = true
       } catch (error) {
         console.error('Error fetching match:', error)
       }
     },
     onResultados (paymentData) {
-      console.log('Volvimos wachooo')
+      // console.log('Volvimos wachooo', paymentData)
+
       this.isPaymentModalActive = false
       this.$swal.fire({
         icon: 'success',
@@ -1127,6 +1130,17 @@ export default defineComponent({
       // return this.info
       // this.collectMoney = true
       // this.payQuoteButton = false
+    },
+
+    async setPaymentQuoteStatus (idPlayer) {
+      const localStorageData = JSON.parse(localStorage.getItem('userData'))
+      const token = localStorageData.token
+      const response = await axios.put(
+        `${backendURL}/api/UserMatch/PlayersMatch/${idPlayer}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
     }
   }
 })
